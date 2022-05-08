@@ -1,0 +1,1 @@
+docker run -p 8090:8090 ssamantr/customer-loan:0.0.1-SNAPSHOT

@@ -1,0 +1,1 @@
+docker run -p 9000:9000 ssamantr/credit-card:0.0.1-SNAPSHOT

@@ -1,0 +1,9 @@
+accounts:
+  msg: Welcome to Accounts prod application
+  build-version: 2
+  mailDetails:
+    hostName: prod-accounts@gmail.com
+    port: 9010
+    from: prod-accounts@gmail.com
+    subject: Your Account Details from Prod Environment
+  activeBranches: [Hyderabad, Paris, NewYork]

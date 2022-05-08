@@ -1,0 +1,9 @@
+accounts:
+  msg: Welcome to Accounts default application
+  build-version: 3
+  mailDetails:
+    hostName: default-accounts@gmail.com
+    port: 9000
+    from: default-accounts@gmail.com
+    subject: Your Account Details from Default Environment
+  activeBranches: [Mumbai, London, Washington]

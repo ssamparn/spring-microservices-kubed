@@ -1,0 +1,9 @@
+accounts:
+  msg: Welcome to Accounts test application
+  build-version: 2
+  mailDetails:
+    hostName: test-accounts@gmail.com
+    port: 9020
+    from: test-accounts@gmail.com
+    subject: Your Account Details from Test Environment
+  activeBranches: [Chennai, Berlin, Indianapollis]
