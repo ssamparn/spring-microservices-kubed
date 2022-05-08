@@ -5,13 +5,13 @@ spring:
   application:
     name: configserver
   profiles:
-    active: native
+    active: git
   cloud:
     config:
       server:
         git:
           uri: https://github.com/ssamparn/config-repo.git
           username: ssamparn
-          password: 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
+          password: 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
           default-label: master
           clone-on-start: true

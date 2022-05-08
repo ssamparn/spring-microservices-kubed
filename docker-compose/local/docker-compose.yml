@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+
+  configserver:
+    image: ssamantr/config-server:latest
+    ports:
+      - "8071:8071"
+    restart: always
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+
+  credit-card-service:
+    image: ssamantr/credit-card:0.0.1-SNAPSHOT
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    depends_on:
+      - configserver
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+  customer-loan-service:
+    image: ssamantr/customer-loan:0.0.1-SNAPSHOT
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    depends_on:
+      - configserver
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+  user-account-service:
+    image: ssamantr/user-account:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    depends_on:
+      - configserver
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+networks:
+  spring-microservices-kubed-network:
