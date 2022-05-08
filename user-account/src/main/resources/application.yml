@@ -2,8 +2,12 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: optional:configserver:http://localhost:8071
   application:
-    name: user-accounts
+    name: accounts
+  profiles:
+    active: prod
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver

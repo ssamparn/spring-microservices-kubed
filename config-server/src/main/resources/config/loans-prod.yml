@@ -1,4 +1,4 @@
-cards:
+loans:
   msg: Welcome to Loans prod application
   build-version: 1
   mailDetails:

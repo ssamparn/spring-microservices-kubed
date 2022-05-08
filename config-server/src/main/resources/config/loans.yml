@@ -1,4 +1,4 @@
-cards:
+loans:
   msg: Welcome to Loans default application
   build-version: 3
   mailDetails:
