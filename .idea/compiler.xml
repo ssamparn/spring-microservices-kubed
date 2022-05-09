@@ -10,6 +10,7 @@
         <module name="customer-loan" />
         <module name="config-server" />
         <module name="user-account" />
+        <module name="discovery-server" />
         <module name="credit-card" />
       </profile>
     </annotationProcessing>
@@ -19,6 +20,7 @@
       <module name="config-server" options="-parameters" />
       <module name="credit-card" options="-parameters" />
       <module name="customer-loan" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
       <module name="user-account" options="-parameters" />
     </option>
   </component>

@@ -1,5 +1,5 @@
 accounts:
-  msg: Welcome to Accounts test application
+  msg: '{cipher}c0daad0fa32083f7eea053b4fc0049f2342f27dda9fcd4d8cb0a170d41172cd8bbfe2853e73905ed08ccb01b51378952f92adfe3f972119377096da7e0e91c0c'
   build-version: 2
   mailDetails:
     hostName: test-accounts@gmail.com

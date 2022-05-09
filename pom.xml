@@ -22,5 +22,6 @@
     <module>customer-loan</module>
     <module>credit-card</module>
     <module>config-server</module>
+    <module>discovery-server</module>
   </modules>
 </project>
