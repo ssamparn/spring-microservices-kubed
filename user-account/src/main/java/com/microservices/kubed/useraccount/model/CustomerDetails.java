@@ -1,15 +1,14 @@
 package com.microservices.kubed.useraccount.model;
 
-import com.microservices.kubed.useraccount.entity.AccountsEntity;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class CustomerDetails {
-
-    private AccountsEntity accounts;
+    private Account account;
     private List<Loan> loans;
     private List<Card> cards;
-
 }

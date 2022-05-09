@@ -3,11 +3,9 @@ package com.microservices.kubed.useraccount.web.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.microservices.kubed.useraccount.entity.AccountsEntity;
-import com.microservices.kubed.useraccount.entity.CustomerEntity;
-import com.microservices.kubed.useraccount.model.ConfigProperties;
+import com.microservices.kubed.useraccount.model.*;
 import com.microservices.kubed.useraccount.properties.AccountServiceConfigProps;
-import com.microservices.kubed.useraccount.repository.AccountsRepository;
+import com.microservices.kubed.useraccount.web.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequiredArgsConstructor
 public class UserAccountsRestController {
 
-    private final AccountsRepository accountsRepository;
+    private final AccountService accountsService;
     private final AccountServiceConfigProps configProps;
 
     @PostMapping("/account")
-    public ResponseEntity<AccountsEntity> getAccountDetails(@RequestBody CustomerEntity customer) {
+    public ResponseEntity<Account> getAccountDetails(@RequestBody Customer customer) {
 
-        AccountsEntity accounts = accountsRepository.findByCustomerId(customer.getCustomerId());
+        Account account = accountsService.getAccount(customer.getCustomerId());
 
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @GetMapping("/account/properties")
@@ -42,5 +39,15 @@ public class UserAccountsRestController {
         String jsonString = objectWriter.writeValueAsString(configProperties);
 
         return new ResponseEntity<>(jsonString, HttpStatus.OK);
+    }
+
+    @PostMapping("/account/customer-details")
+    public ResponseEntity<CustomerDetails> getCustomerDetail(@RequestBody Customer customer) {
+
+        Account account = accountsService.getAccount(customer.getCustomerId());
+
+        CustomerDetails customerDetails = accountsService.getCustomerDetails(customer, account);
+
+        return new ResponseEntity<>(customerDetails, HttpStatus.OK);
     }
 }

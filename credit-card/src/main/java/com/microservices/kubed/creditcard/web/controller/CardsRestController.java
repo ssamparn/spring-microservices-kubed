@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.microservices.kubed.creditcard.entity.CardEntity;
+import com.microservices.kubed.creditcard.model.Card;
 import com.microservices.kubed.creditcard.model.ConfigProperties;
 import com.microservices.kubed.creditcard.model.Customer;
 import com.microservices.kubed.creditcard.properties.CardServiceConfigProps;
 import com.microservices.kubed.creditcard.repository.CardsRepository;
+import com.microservices.kubed.creditcard.service.CardsServiceResponseFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,16 @@ public class CardsRestController {
 
     private final CardsRepository cardsRepository;
     private final CardServiceConfigProps configProps;
+    private final CardsServiceResponseFactory responseFactory;
 
     @PostMapping("/cards")
-    public ResponseEntity<List<CardEntity>> getCardDetails(@RequestBody Customer customer) {
+    public ResponseEntity<List<Card>> getCardDetails(@RequestBody Customer customer) {
 
-        List<CardEntity> cards = cardsRepository.findByCustomerId(customer.getCustomerId());
+        List<CardEntity> cardsEntity = cardsRepository.findByCustomerId(customer.getCustomerId());
 
-        return new ResponseEntity<>(cards, HttpStatus.OK);
+        List<Card> card = responseFactory.createCardsResponse(cardsEntity);
+
+        return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
     @GetMapping("/cards/properties")

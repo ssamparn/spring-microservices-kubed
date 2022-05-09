@@ -3,11 +3,12 @@ package com.microservices.kubed.customerloan.web.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.microservices.kubed.customerloan.entity.LoanEntity;
 import com.microservices.kubed.customerloan.model.ConfigProperties;
 import com.microservices.kubed.customerloan.model.Customer;
+import com.microservices.kubed.customerloan.model.Loan;
 import com.microservices.kubed.customerloan.properties.LoanServiceConfigProps;
 import com.microservices.kubed.customerloan.repository.LoansDataRepository;
+import com.microservices.kubed.customerloan.service.LoansServiceResponseFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,14 @@ public class LoansRestController {
 
     private final LoansDataRepository loansRepository;
     private final LoanServiceConfigProps configProps;
+    private final LoansServiceResponseFactory responseFactory;
 
     @PostMapping("/loans")
-    public ResponseEntity<List<LoanEntity>> getLoansDetails(@RequestBody Customer customer) {
+    public ResponseEntity<List<Loan>> getLoansDetails(@RequestBody Customer customer) {
 
-        List<LoanEntity> loans = loansRepository.findByCustomerIdOrderByStartDateDesc(customer.getCustomerId());
+        var loansEntity = loansRepository.findByCustomerIdOrderByStartDateDesc(customer.getCustomerId());
+
+        var loans = responseFactory.createLoansResponse(loansEntity);
 
         return new ResponseEntity<>(loans, HttpStatus.OK);
     }

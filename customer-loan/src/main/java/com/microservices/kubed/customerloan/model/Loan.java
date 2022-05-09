@@ -1,4 +1,4 @@
-package com.microservices.kubed.useraccount.model;
+package com.microservices.kubed.customerloan.model;
 
 import lombok.Data;
 
