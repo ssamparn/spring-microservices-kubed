@@ -10,6 +10,7 @@ import com.microservices.kubed.customerloan.properties.LoanServiceConfigProps;
 import com.microservices.kubed.customerloan.repository.LoansDataRepository;
 import com.microservices.kubed.customerloan.service.LoansServiceResponseFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class LoansRestController {
@@ -28,7 +30,9 @@ public class LoansRestController {
     private final LoansServiceResponseFactory responseFactory;
 
     @PostMapping("/loans")
-    public ResponseEntity<List<Loan>> getLoansDetails(@RequestBody Customer customer) {
+    public ResponseEntity<List<Loan>> getLoanDetails(@RequestBody Customer customer) {
+
+        log.info("getLoanDetails called");
 
         var loansEntity = loansRepository.findByCustomerIdOrderByStartDateDesc(customer.getCustomerId());
 

@@ -46,3 +46,32 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8070/eureka/
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      customer-details:
+        registerHealthIndicator: true
+        minimumNumberOfCalls: 6
+        failureRateThreshold: 50
+        waitDurationInOpenState: 3s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
+        eventConsumerBufferSize: 10
+  retry:
+    instances:
+      customer-details:
+        maxAttempts: 3
+        waitDuration: 5s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.io.IOException
+  ratelimiter:
+    instances:
+      customer-details:
+        limitForPeriod: 10
+        limitRefreshPeriod: 1s
+        timeoutDuration: 5s
