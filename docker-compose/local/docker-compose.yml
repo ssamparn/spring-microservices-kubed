@@ -12,8 +12,30 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
 
+  discovery-server:
+    image: ssamantr/discovery-server:latest
+    ports:
+      - "8070:8070"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 3
+        window: 120s
+    depends_on:
+      - configserver
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
   credit-card-service:
-    image: ssamantr/credit-card:0.0.1-SNAPSHOT
+    image: ssamantr/credit-card:latest
     ports:
       - "9000:9000"
     deploy:
@@ -28,14 +50,16 @@ services:
         window: 120s
     depends_on:
       - configserver
+      - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
   customer-loan-service:
-    image: ssamantr/customer-loan:0.0.1-SNAPSHOT
+    image: ssamantr/customer-loan:latest
     ports:
       - "8090:8090"
     deploy:
@@ -50,14 +74,16 @@ services:
         window: 120s
     depends_on:
       - configserver
+      - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
   user-account-service:
-    image: ssamantr/user-account:0.0.1-SNAPSHOT
+    image: ssamantr/user-account:latest
     ports:
       - "8080:8080"
     deploy:
@@ -72,11 +98,13 @@ services:
         window: 120s
     depends_on:
       - configserver
+      - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
 networks:
   spring-microservices-kubed-network:
