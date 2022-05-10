@@ -9,10 +9,8 @@ import com.microservices.kubed.useraccount.web.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +20,10 @@ public class UserAccountsRestController {
     private final AccountServiceConfigProps configProps;
 
     @PostMapping("/account")
-    public ResponseEntity<Account> getAccountDetails(@RequestBody Customer customer) {
+    public ResponseEntity<Account> getAccountDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId,
+                                                     @RequestBody Customer customer) {
 
-        Account account = accountsService.getAccount(customer.getCustomerId());
+        var account = accountsService.getAccount(customer.getCustomerId());
 
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -41,12 +40,13 @@ public class UserAccountsRestController {
         return new ResponseEntity<>(jsonString, HttpStatus.OK);
     }
 
-    @PostMapping("/account/customer-details")
-    public ResponseEntity<CustomerDetails> getCustomerDetail(@RequestBody Customer customer) {
+    @PostMapping("/customer-details")
+    public ResponseEntity<CustomerDetails> getCustomerDetail(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId,
+                                                             @RequestBody Customer customer) {
 
-        Account account = accountsService.getAccount(customer.getCustomerId());
+        var account = accountsService.getAccount(customer.getCustomerId());
 
-        CustomerDetails customerDetails = accountsService.getCustomerDetails(customer, account);
+        var customerDetails = accountsService.getCustomerDetails(customer, account, xRequestTraceId);
 
         return new ResponseEntity<>(customerDetails, HttpStatus.OK);
     }

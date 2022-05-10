@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class LoansRestController {
     private final LoansServiceResponseFactory responseFactory;
 
     @PostMapping("/loans")
-    public ResponseEntity<List<Loan>> getLoanDetails(@RequestBody Customer customer) {
+    public ResponseEntity<List<Loan>> getLoanDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId, @RequestBody Customer customer) {
 
         log.info("getLoanDetails called");
 

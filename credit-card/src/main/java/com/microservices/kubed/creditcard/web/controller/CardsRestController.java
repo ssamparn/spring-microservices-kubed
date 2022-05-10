@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class CardsRestController {
     private final CardsServiceResponseFactory responseFactory;
 
     @PostMapping("/cards")
-    public ResponseEntity<List<Card>> getCardDetails(@RequestBody Customer customer) {
+    public ResponseEntity<List<Card>> getCardDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId, @RequestBody Customer customer) {
 
         List<CardEntity> cardsEntity = cardsRepository.findByCustomerId(customer.getCustomerId());
 

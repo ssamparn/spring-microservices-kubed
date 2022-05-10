@@ -31,10 +31,10 @@ public class AccountService {
     @CircuitBreaker(name = "customer-details", fallbackMethod = "customerDetailsFallback")
     @Retry(name = "customer-details", fallbackMethod = "customerDetailsFallback")
     @RateLimiter(name = "customer-details")
-    public CustomerDetails getCustomerDetails(final Customer customer, final Account account) {
-        List<Loan> customerLoanDetails = loansFeignClient.getLoanDetails(customer);
+    public CustomerDetails getCustomerDetails(final Customer customer, final Account account, final String xRequestTraceId) {
+        List<Loan> customerLoanDetails = loansFeignClient.getLoanDetails(customer, xRequestTraceId);
 
-        List<Card> customerCardDetails = cardsFeignClient.getCardDetails(customer);
+        List<Card> customerCardDetails = cardsFeignClient.getCardDetails(customer, xRequestTraceId);
 
         return CustomerDetails.builder()
                 .account(account)
@@ -43,8 +43,8 @@ public class AccountService {
                 .build();
     }
 
-    private CustomerDetails customerDetailsFallback(final Customer customer, final Account account, Throwable t) {
-        List<Loan> customerLoanDetails = loansFeignClient.getLoanDetails(customer);
+    private CustomerDetails customerDetailsFallback(final Customer customer, final Account account, final String xRequestTraceId, Throwable t) {
+        List<Loan> customerLoanDetails = loansFeignClient.getLoanDetails(customer, xRequestTraceId);
 
         return CustomerDetails.builder()
                 .account(account)
