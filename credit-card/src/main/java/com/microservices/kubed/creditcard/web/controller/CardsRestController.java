@@ -11,6 +11,7 @@ import com.microservices.kubed.creditcard.properties.CardServiceConfigProps;
 import com.microservices.kubed.creditcard.repository.CardsRepository;
 import com.microservices.kubed.creditcard.service.CardsServiceResponseFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class CardsRestController {
@@ -31,6 +33,8 @@ public class CardsRestController {
 
     @PostMapping("/cards")
     public ResponseEntity<List<Card>> getCardDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId, @RequestBody Customer customer) {
+
+        log.info("getCardDetails is called");
 
         List<CardEntity> cardsEntity = cardsRepository.findByCustomerId(customer.getCustomerId());
 

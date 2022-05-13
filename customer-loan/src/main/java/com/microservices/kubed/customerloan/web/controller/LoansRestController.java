@@ -33,7 +33,7 @@ public class LoansRestController {
     @PostMapping("/loans")
     public ResponseEntity<List<Loan>> getLoanDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId, @RequestBody Customer customer) {
 
-        log.info("getLoanDetails called");
+        log.info("getLoanDetails is called");
 
         var loansEntity = loansRepository.findByCustomerIdOrderByStartDateDesc(customer.getCustomerId());
 

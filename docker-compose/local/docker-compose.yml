@@ -2,15 +2,39 @@ version: '3.8'
 
 services:
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672" #JMS Port
+      - "15672:15672" #Management Port - default user:pass = guest:guest
+    networks:
+      - spring-microservices-kubed-network
+
+  zipkin:
+    image: openzipkin/zipkin
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+    ports:
+      - "9411:9411"
+    networks:
+      - spring-microservices-kubed-network
+
   configserver:
     image: ssamantr/config-server:latest
     ports:
       - "8071:8071"
     restart: always
+    depends_on:
+      - zipkin
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   discovery-server:
     image: ssamantr/discovery-server:latest
@@ -33,6 +57,35 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
+
+  gateway-server:
+    image: ssamantr/gateway-server
+    ports:
+      - "8072:8072"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 500M
+      restart_policy:
+        condition: on-failure
+        delay: 45s
+        max_attempts: 3
+        window: 180s
+    depends_on:
+      - configserver
+      - discovery-server
+      - credit-card-service
+      - customer-loan-service
+      - user-account-service
+    networks:
+      - spring-microservices-kubed-network
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   credit-card-service:
     image: ssamantr/credit-card:latest
@@ -57,6 +110,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   customer-loan-service:
     image: ssamantr/customer-loan:latest
@@ -81,6 +135,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   user-account-service:
     image: ssamantr/user-account:latest
@@ -105,6 +160,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
 networks:
   spring-microservices-kubed-network:

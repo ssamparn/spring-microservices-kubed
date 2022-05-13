@@ -23,6 +23,20 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    base-url: http://localhost:9411/
+    sender:
+      type: rabbit
+    rabbitmq:
+      queue: zipkin
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 management:
   endpoints:

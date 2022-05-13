@@ -7,11 +7,12 @@ import com.microservices.kubed.useraccount.model.*;
 import com.microservices.kubed.useraccount.properties.AccountServiceConfigProps;
 import com.microservices.kubed.useraccount.web.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserAccountsRestController {
@@ -22,6 +23,8 @@ public class UserAccountsRestController {
     @PostMapping("/account")
     public ResponseEntity<Account> getAccountDetails(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId,
                                                      @RequestBody Customer customer) {
+
+        log.info("getAccountDetails is called");
 
         var account = accountsService.getAccount(customer.getCustomerId());
 
@@ -43,6 +46,8 @@ public class UserAccountsRestController {
     @PostMapping("/customer-details")
     public ResponseEntity<CustomerDetails> getCustomerDetail(@RequestHeader("X-Request-Trace-Id") String xRequestTraceId,
                                                              @RequestBody Customer customer) {
+
+        log.info("getCustomerDetail is called");
 
         var account = accountsService.getAccount(customer.getCustomerId());
 
