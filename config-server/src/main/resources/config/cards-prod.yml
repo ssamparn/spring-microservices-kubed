@@ -1,9 +1,0 @@
-cards:
-  msg: Welcome to Cards prod application
-  build-version: 1
-  mailDetails:
-    hostName: prod-cards@gmail.com
-    port: 9012
-    from: prod-cards@gmail.com
-    subject: Your Card Details from Prod Environment
-  activeBranches: [Hyderabad, Paris, NewYork]

@@ -1,9 +1,0 @@
-loans:
-  msg: Welcome to Loans default application
-  build-version: 3
-  mailDetails:
-    hostName: default-loans@gmail.com
-    port: 9002
-    from: default-loans@gmail.com
-    subject: Your Loan Details from Default Environment
-  activeBranches: [Mumbai, London, Washington]

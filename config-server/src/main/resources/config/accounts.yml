@@ -1,9 +1,0 @@
-accounts:
-  msg: '{cipher}e7b5dd702fb035c37c98c323ac4b49fb305bca47c2a7a0bf81c0fd92bdbbd2f83d55109056e9c66cab6adc3906d9ea7f42ced5f3a8a561bc9615fcd72432fa32'
-  build-version: 3
-  mailDetails:
-    hostName: default-accounts@gmail.com
-    port: 9000
-    from: default-accounts@gmail.com
-    subject: Your Account Details from Default Environment
-  activeBranches: [Mumbai, London, Washington]

@@ -1,9 +1,0 @@
-cards:
-  msg: Welcome to Cards test application
-  build-version: 2
-  mailDetails:
-    hostName: test-cards@gmail.com
-    port: 9022
-    from: test-cards@gmail.com
-    subject: Your Card Details from Test Environment
-  activeBranches: [Chennai, Berlin, Indianapollis]

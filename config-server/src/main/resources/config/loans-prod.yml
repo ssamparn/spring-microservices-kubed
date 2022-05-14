@@ -1,9 +1,0 @@
-loans:
-  msg: Welcome to Loans prod application
-  build-version: 1
-  mailDetails:
-    hostName: prod-loans@gmail.com
-    port: 9011
-    from: prod-loans@gmail.com
-    subject: Your Loan Details from Prod Environment
-  activeBranches: [Hyderabad, Paris, NewYork]

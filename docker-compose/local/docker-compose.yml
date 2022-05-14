@@ -6,8 +6,8 @@ services:
     image: rabbitmq:3-management
     restart: always
     ports:
-      - "5672:5672" #JMS Port
-      - "15672:15672" #Management Port - default user:pass = guest:guest
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - spring-microservices-kubed-network
 
@@ -17,24 +17,11 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 900M
     ports:
       - "9411:9411"
     networks:
       - spring-microservices-kubed-network
-
-  configserver:
-    image: ssamantr/config-server:latest
-    ports:
-      - "8071:8071"
-    restart: always
-    depends_on:
-      - zipkin
-    networks:
-      - spring-microservices-kubed-network
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   discovery-server:
     image: ssamantr/discovery-server:latest
@@ -44,19 +31,16 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 1000M
       restart_policy:
         condition: on-failure
-        delay: 15s
-        max_attempts: 3
+        delay: 2s
+        max_attempts: 10
         window: 120s
-    depends_on:
-      - configserver
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   gateway-server:
@@ -67,14 +51,13 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 1000M
       restart_policy:
         condition: on-failure
-        delay: 45s
-        max_attempts: 3
+        delay: 30s
+        max_attempts: 10
         window: 180s
     depends_on:
-      - configserver
       - discovery-server
       - credit-card-service
       - customer-loan-service
@@ -83,7 +66,6 @@ services:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
@@ -95,20 +77,18 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 1000M
       restart_policy:
         condition: on-failure
         delay: 5s
-        max_attempts: 3
+        max_attempts: 10
         window: 120s
     depends_on:
-      - configserver
       - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
@@ -120,20 +100,18 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 1000M
       restart_policy:
         condition: on-failure
         delay: 5s
-        max_attempts: 3
+        max_attempts: 10
         window: 120s
     depends_on:
-      - configserver
       - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
@@ -145,20 +123,18 @@ services:
       resources:
         limits:
           cpus: 0.50
-          memory: 500M
+          memory: 1000M
       restart_policy:
         condition: on-failure
         delay: 5s
-        max_attempts: 3
+        max_attempts: 10
         window: 120s
     depends_on:
-      - configserver
       - discovery-server
     networks:
       - spring-microservices-kubed-network
     environment:
       SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 

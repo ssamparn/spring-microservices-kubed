@@ -4,8 +4,9 @@ server:
 spring:
   application:
     name: cards
-  config:
-    import: optional:configserver:http://localhost:8071
+  cloud:
+    config:
+      enabled: false
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -58,3 +59,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8070/eureka/
+
+cards:
+  msg: Welcome to Cards default application
+  build-version: 3
+  mailDetails:
+    hostName: default-cards@gmail.com
+    port: 9002
+    from: default-cards@gmail.com
+    subject: Your Card Details from Default Environment
+  activeBranches: [Mumbai, London, Washington]

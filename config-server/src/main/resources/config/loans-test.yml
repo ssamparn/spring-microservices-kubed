@@ -1,9 +1,0 @@
-loans:
-  msg: Welcome to Loans test application
-  build-version: 2
-  mailDetails:
-    hostName: test-loans@gmail.com
-    port: 9021
-    from: test-loans@gmail.com
-    subject: Your Loan Details from Test Environment
-  activeBranches: [Chennai, Berlin, Indianapollis]

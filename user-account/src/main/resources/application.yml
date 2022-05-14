@@ -4,10 +4,11 @@ server:
 spring:
   application:
     name: accounts
-  config:
-    import: optional:configserver:http://localhost:8071
+  cloud:
+    config:
+      enabled: false
   profiles:
-    active: prod
+    active: default
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -89,3 +90,13 @@ resilience4j:
         limitForPeriod: 10
         limitRefreshPeriod: 1s
         timeoutDuration: 5s
+
+accounts:
+  msg: Welcome to Default Accounts application
+  build-version: 3
+  mailDetails:
+    hostName: default-accounts@gmail.com
+    port: 9000
+    from: default-accounts@gmail.com
+    subject: Your Account Details from Default Environment
+  activeBranches: [Mumbai, London, Washington]
